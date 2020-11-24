@@ -22,7 +22,7 @@ function printHelp {
 # regex to check is OPTARG an integer
 re='^[0-9]+$'
 
-while getopts :f:d FLAG; do
+while getopts :f:d: FLAG; do
   case ${FLAG} in
     d)
       if ! [[ ${OPTARG} =~ $re ]] ; then
@@ -50,7 +50,7 @@ then
   printHelp
 fi
 
-if [ -r ${STATUS_FILE}]
+if [ -r ${STATUS_FILE} ]
 then
   FILE_TIMESTAMP=$(grep TIMESTAMP ${STATUS_FILE} | awk -F"=" '{print $2}')
   FILE_STATUS=$(grep STATUS ${STATUS_FILE} | awk -F"=" '{print $2}')
@@ -60,7 +60,7 @@ else
   exit 2
 fi
 
-if [ $( ${FILE_TIMESTAMP} + ${TIMESTAMP_DELTA} ) -le $(date +%s) ]
+if [ $(( ${FILE_TIMESTAMP} + ${TIMESTAMP_DELTA} )) -le $(date +%s) ]
 then
   echo -e "CRITICAL: ${STATUS_FILE} didn't get update in the last ${TIMESTAMP_DELTA} seconds"
   exit 2
